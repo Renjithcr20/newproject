@@ -18,7 +18,7 @@
                               
 
                 // For Python:
-                // sh 'python setup.py build'
+                sh 'python setup.py build'
             }
         }
 
@@ -29,7 +29,7 @@
 
             
                 // For Python:
-                // sh 'pytest'
+                 sh 'pytest'
             }
         }
 
