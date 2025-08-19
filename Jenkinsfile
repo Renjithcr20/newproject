@@ -1,8 +1,18 @@
 
-      pipeline {
+   pipeline {
     agent any
 
     stages {
+        stage('Setup Python') {
+            steps {
+                sh '''
+                  sudo apt-get update -y
+                  sudo apt-get install -y python3 python3-pip
+                  pip3 install pytest
+                '''
+            }
+        }
+
         stage('Clone Repo') {
             steps {
                 git branch: 'main', url: 'https://github.com/Renjithcr20/newproject.git'
@@ -12,30 +22,14 @@
         stage('Build') {
             steps {
                 echo 'Building project...'
-                // 👇 Change this based on your project
-               
-
-                              
-
-                // For Python:
-                sh 'python setup.py build'
+                sh 'python3 setup.py build'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
-               
-
-            
-                // For Python:
-                 sh 'pytest'
-            }
-        }
-
-        stage('Hello') {
-            steps {
-                echo 'Hello from Jenkins Pipeline!'
+                sh 'pytest'
             }
         }
     }
