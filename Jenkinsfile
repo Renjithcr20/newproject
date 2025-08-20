@@ -22,7 +22,7 @@
         stage('Build') {
             steps {
                 echo 'Building project...'
-                sh 'python3 setup.py build'
+                sh 'python3 hello.py build'
             }
         }
 
