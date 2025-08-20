@@ -2,16 +2,8 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Setup Environment') {
             steps {
-                echo 'Cloning repository...'
-                git branch: 'main', url: 'https://github.com/Renjithcr20/newproject.git'
-            }
-        }
-
-        stage('Setup Python') {
-            steps {
-                echo 'Setting up Python environment...'
                 sh '''
                   sudo apt-get update -y
                   sudo apt-get install -y python3 python3-pip
@@ -20,10 +12,15 @@ pipeline {
             }
         }
 
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Renjithcr20/newproject.git'
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Building project...'
-                // Example: replace with actual build command
                 sh 'python3 hello.py build'
             }
         }
@@ -31,15 +28,19 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                stage('Test') {
-    steps {
-        echo 'Running tests...'
-        sh '''
-          python3 -m pytest || echo "No tests found, skipping..."
-        '''
-    }
-}
+                sh '''
+                  if ls test_*.py > /dev/null 2>&1; then
+                      python3 -m pytest
+                  else
+                      echo "No tests found. Skipping..."
+                  fi
+                '''
+            }
+        }
 
+        stage('Deploy') {
+            steps {
+                echo 'Deploy stage - placeholder'
             }
         }
     }
